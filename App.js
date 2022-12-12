@@ -1,19 +1,15 @@
 import React from 'react'
-import { View, Text, StyleSheet } from 'react-native'
+import { Navigation } from './screens/Navigation'
+import { createStore } from "redux";
+import { rootReducer } from './redux/RootReducer';
+import { Provider } from'react-redux'
+
+const store = createStore(rootReducer)
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      <Text style={styles.text}>Hellow</Text>
-    </View>
+    <Provider store={store}>
+      <Navigation />
+    </Provider>
   )
 }
-
-const styles = StyleSheet.create({
-  container:{
-
-  },
-  text:{
-
-  }
-})
