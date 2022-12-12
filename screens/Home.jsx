@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, {useCallback} from 'react';
 import axios from 'axios';
 import {FlatList, View, RefreshControl} from 'react-native';
 import Song from '../components/Song';
@@ -6,13 +6,18 @@ import {Loading} from '../components/Loading';
 import {connect} from 'react-redux';
 import {ADD_FAVORITES, REMOVE_FAVORITES} from '../redux/Type';
 
-const Home = ({navigation, addToFavorite, removeFromFavorite, favorites = []}) => {
+const Home = ({
+  navigation,
+  addToFavorite,
+  removeFromFavorite,
+  favoritesList = [],
+}) => {
   const [items, setItems] = React.useState([]);
   const [isLoading, setIsLoading] = React.useState(true);
 
   React.useEffect(() => {
-    console.log(favorites);
-  }, [favorites]);
+    console.log(favoritesList);
+  }, [favoritesList]);
 
   const fetchPosts = () => {
     setIsLoading(true);
@@ -30,18 +35,20 @@ const Home = ({navigation, addToFavorite, removeFromFavorite, favorites = []}) =
 
   React.useEffect(fetchPosts, []);
 
-  const onFavoritePress = useCallback(item => {
-    const exsistingItem = favorites.find(
-      favoriteItem =>
-        item?.track && favoriteItem.track.track_id === item.track.track_id,
-    );
-    
-    if (exsistingItem) {
-      removeFromFavorite(exsistingItem.track.track_id);
-    } else {
-      addToFavorite(item);
-    }
-  }, [removeFromFavorite, addToFavorite, favorites])
+  const onFavoritePress = useCallback(
+    item => {
+      const isSongInFavorites = favoritesList.some(
+        song => song.track_id === item.track_id,
+      );
+
+      if (isSongInFavorites) {
+        removeFromFavorite(item.track_id);
+      } else {
+        addToFavorite(item);
+      }
+    },
+    [removeFromFavorite, addToFavorite, favoritesList],
+  );
 
   const onTrackPress = trackDetails => {
     navigation.navigate('FullSong', {...trackDetails});
@@ -61,6 +68,7 @@ const Home = ({navigation, addToFavorite, removeFromFavorite, favorites = []}) =
         renderItem={({item}) => (
           <Song
             onFavoritePress={onFavoritePress}
+            favoritesList={favoritesList}
             onTrackPress={() =>
               onTrackPress({
                 trackDetails: {
@@ -80,7 +88,7 @@ const Home = ({navigation, addToFavorite, removeFromFavorite, favorites = []}) =
 
 function mapStateToProps(state) {
   return {
-    favorites: state.favorites.favorites,
+    favoritesList: state.favorites.list,
   };
 }
 
