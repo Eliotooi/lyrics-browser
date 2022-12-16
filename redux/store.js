@@ -1,10 +1,11 @@
-import {configureStore} from '@reduxjs/toolkit';
-import {rootReducer} from './RootReducer';
-import createDebugger from 'redux-flipper';
+import { configureStore } from '@reduxjs/toolkit'
+import createDebugger from 'redux-flipper'
+
+import { rootReducer } from './RootReducer'
 
 export const store = configureStore({
   devTools: true,
   reducer: rootReducer,
-  middleware: getDefaultMiddleware =>
-    getDefaultMiddleware().concat(createDebugger()),
-});
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware().concat(createDebugger())
+})

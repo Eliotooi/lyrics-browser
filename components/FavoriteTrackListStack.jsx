@@ -1,26 +1,24 @@
 import React from 'react'
-import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import Icon from 'react-native-vector-icons/AntDesign'
+import { createNativeStackNavigator } from '@react-navigation/native-stack'
 
 import FullSong from '../screens/FullSong'
-import Home from '../screens/Home'
+import Favorite from '../screens/Favorite'
 
 const Stack = createNativeStackNavigator()
-
 const headerRightIcon = () => (
   <Icon name='hearto' size={25} color='grey' />
 )
-
-export default function TrackListStack () {
+export default function FavoriteTrackListStack() {
   return (
     <Stack.Navigator>
       <Stack.Screen
-        name='Home'
-        component={Home}
+        name='FavoriteList'
+        component={Favorite}
         options={{ title: 'Browse' }}
       />
       <Stack.Screen
-        name='FullSong'
+        name='FullSongFavorite'
         component={FullSong}
         options={{
           title: 'Song',
